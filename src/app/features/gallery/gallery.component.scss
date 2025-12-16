@@ -1,0 +1,39 @@
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+$primary-color: #1a1a1a;
+
+.fab-add-button {
+  cursor: pointer;
+  position: fixed;
+  bottom: 30px; 
+  right: 30px;
+  z-index: 1000;
+
+  width: 3rem;
+  height: 3rem;
+  background-color: var(--color-red);
+  border-radius: 50%;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  svg {
+    color: #ffffff;
+    width: 28px;
+    height: 28px;
+  }
+
+  transition: all 0.2s ease-in-out;
+
+  &:hover {
+    background-color: var(--color-red-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+  }
+}

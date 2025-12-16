@@ -1,0 +1,29 @@
+<div class="auth-container">
+  <div class="auth-panel-visual">
+    <div class="visual-content">
+      <h1>C.LIET Tableaux</h1>
+      <p>Une toile, des pinceaux, un voyage.</p>
+    </div>
+  </div>
+
+  <div class="auth-panel-form">
+    <a routerLink="/gallery" class="auth-panel-link">&larr; Retour à l'accueil</a>
+    <div class="form-wrapper">
+      <div *ngIf="isLoginView; else signupView">
+        <app-login-form></app-login-form>
+        <p class="toggle-link">
+          Pas encore de compte ? <a (click)="toggleView()">Inscrivez-vous</a>
+        </p>
+      </div>
+
+      <ng-template #signupView>
+        <app-signup-form></app-signup-form>
+        <p class="toggle-link">
+          Déjà un compte ? <a (click)="toggleView()">Connectez-vous</a>
+        </p>
+      </ng-template>
+      <p class="sm">* champs obligatoires</p>
+    </div>
+  </div>
+</div>
+

@@ -1,0 +1,30 @@
+<header class="header">
+  <div class="container">
+    <app-logo />
+    <nav class="nav">
+      <a routerLink="/gallery" routerLinkActive="active-link">Galerie</a>
+      <a routerLink="/about" routerLinkActive="active-link">L'artiste</a>
+      <a routerLink="/ondemand" routerLinkActive="active-link">A la demande</a>
+      <a routerLink="/contact" routerLinkActive="active-link">Contact</a>
+      @if (isLoggedIn()) {
+        <div class="user-menu" #userMenu>
+          <button class="user-menu-trigger" (click)="toggleDropdown()">
+            {{ username() }}
+            <span class="arrow-down">▼</span>
+          </button>
+
+          @if (isDropdownOpen()) {
+            <div class="user-menu-dropdown">
+              <a routerLink="/users/{{currentUser()?.id}}">Mon Compte</a>
+              <a routerLink="/mes-commandes">Mes Commandes</a>
+              <hr>
+              <button (click)="logout()">Déconnexion</button>
+            </div>
+          }
+        </div>
+      } @else {
+        <a routerLink="/users/login" routerLinkActive="active-link">Connexion</a>
+      }
+    </nav>
+  </div>
+</header>

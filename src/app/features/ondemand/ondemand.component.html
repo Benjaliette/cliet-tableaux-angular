@@ -1,0 +1,59 @@
+<div class="form-container">
+  <h2>Commande personnalisée</h2>
+  <p class="intro-text">
+    Décrivez-moi votre projet de peinture. Joignez une image si vous avez une inspiration précise. Je vous recontacterai par email pour affiner votre demande.
+  </p>
+
+  <form [formGroup]="contactForm" (ngSubmit)="onSubmit()" novalidate>
+
+    <!-- Champ Nom -->
+    <div class="form-group">
+      <label for="name">Votre Nom *</label>
+      <input type="text" id="name" formControlName="name" placeholder="Ex: Jean Dupont" [class.is-invalid]="isSubmitted && formControls['name'].errors">
+      <div *ngIf="isSubmitted && formControls['name'].errors" class="error-message">
+        <span *ngIf="formControls['name'].errors['required']">Le nom est requis.</span>
+      </div>
+    </div>
+
+    <!-- Champ Email -->
+    <div class="form-group">
+      <label for="email">Votre Email *</label>
+      <input type="email" id="email" formControlName="email" placeholder="Ex: jean.dupont@email.com" [class.is-invalid]="isSubmitted && formControls['email'].errors">
+      <div *ngIf="isSubmitted && formControls['email'].errors" class="error-message">
+        <span *ngIf="formControls['email'].errors['required']">L'email est requis.</span>
+        <span *ngIf="formControls['email'].errors['email']">Le format de l'email est invalide.</span>
+      </div>
+    </div>
+
+    <!-- Champ Description -->
+    <div class="form-group">
+      <label for="description">Description de votre projet *</label>
+      <textarea id="description" formControlName="description" rows="6" placeholder="Décrivez les couleurs, le style, les dimensions, etc." [class.is-invalid]="isSubmitted && formControls['description'].errors"></textarea>
+      <div *ngIf="isSubmitted && formControls['description'].errors" class="error-message">
+        <span *ngIf="formControls['description'].errors['required']">Une description est requise.</span>
+        <span *ngIf="formControls['description'].errors['minlength']">La description doit faire au moins 20 caractères.</span>
+      </div>
+    </div>
+
+    <!-- Champ Upload d'image -->
+    <div class="form-group">
+      <label for="image" class="file-upload-label">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></svg>
+        <span>Joindre une image (facultatif)</span>
+      </label>
+      <input type="file" id="image" (change)="onFileChange($event)" accept="image/png, image/jpeg">
+      <span *ngIf="fileName" class="file-name">{{ fileName }}</span>
+    </div>
+
+    <!-- Bouton de soumission -->
+    <div class="submit-container">
+        <app-button
+            [text]="'Envoyer ma demande'"
+            [type]="'submit'"
+            [disabled]="contactForm.invalid && isSubmitted">
+        </app-button>
+    </div>
+
+    <p class="sm m-top">* champs obligatoires</p>
+  </form>
+</div>

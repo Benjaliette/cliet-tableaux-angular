@@ -1,0 +1,149 @@
+<div class="form-container">
+  @if (pageError(); as error) {
+  <div class="error-banner">{{ error }}</div>
+  } @else {
+  <header>
+    <!-- Titre changé -->
+    <h1>Modifier l'œuvre</h1>
+    <p>
+      Mettez à jour les informations ci-dessous ou changez l'image de l'œuvre.
+    </p>
+  </header>
+
+  <form [formGroup]="paintingForm" (ngSubmit)="onSubmit()">
+    <!-- TOUTE LA SECTION D'UPLOAD EST STRICTEMENT IDENTIQUE -->
+    <div class="form-section">
+      <h2>Image de l'œuvre</h2>
+
+      @if (previewThumbnailUrl(); as thumbUrl) {
+      <div class="image-preview">
+        <img [src]="thumbUrl" alt="Aperçu du tableau" />
+        <button type="button" (click)="resetImage()">Changer d'image</button>
+      </div>
+      } @else {
+      <div
+        class="drop-zone"
+        [class.dragging]="isDragging()"
+        (click)="fileInput.click()"
+        (dragover)="isDragging.set(true); $event.preventDefault()"
+        (dragleave)="isDragging.set(false)"
+        (drop)="onFileDrop($event)"
+      >
+        @if(uploading()) {
+        <div class="spinner"></div>
+        <p>Chargement en cours...</p>
+        } @else {
+        <span class="upload-icon">🖼️</span>
+        <p>
+          <strong>Glissez-déposez une nouvelle image ici</strong> pour la
+          remplacer.
+        </p>
+        <small>PNG, JPG ou WEBP. 800x600px recommandé.</small>
+        }
+        <input
+          #fileInput
+          type="file"
+          (change)="onFileSelected($event)"
+          accept="image/*"
+          hidden
+        />
+      </div>
+      } @if (uploadError(); as error) {
+      <div class="form-error">{{ error }}</div>
+      }
+    </div>
+
+    <!-- Champs de texte -->
+    <div class="form-section">
+      <h2>Détails de l'œuvre</h2>
+      <div class="form-grid">
+        <!-- Titre -->
+        <div class="form-field">
+          <label for="title">Titre</label>
+          <input id="title" type="text" formControlName="title" />
+        </div>
+
+        <!-- Technique -->
+        <div class="form-field">
+          <label for="technique">Technique</label>
+          <input id="technique" type="text" formControlName="technique" />
+        </div>
+
+        <!-- Dimensions -->
+        <div class="form-field-group">
+          <div class="form-field">
+            <label for="width">Largeur (cm)</label>
+            <input id="width" type="number" formControlName="width" />
+          </div>
+          <div class="form-field">
+            <label for="height">Hauteur (cm)</label>
+            <input id="height" type="number" formControlName="height" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <h2>Disponibilité</h2>
+      <div class="form-grid">
+        <fieldset class="form-field">
+          <legend>Mettre en vente ?</legend>
+          <div class="radio-group">
+            <div class="radio-option">
+              <input
+                type="radio"
+                id="forSaleYes"
+                [value]="true"
+                formControlName="sell"
+              />
+              <label for="forSaleYes">Oui</label>
+            </div>
+            <div class="radio-option">
+              <input
+                type="radio"
+                id="forSaleNo"
+                [value]="false"
+                formControlName="sell"
+              />
+              <label for="forSaleNo">Non</label>
+            </div>
+          </div>
+        </fieldset>
+
+        @if (paintingForm.get('sell')?.value) {
+        <div class="form-field animated-field">
+          <label for="price">Prix (€)</label>
+          <input
+            type="number"
+            id="price"
+            formControlName="price"
+            placeholder="1200"
+          />
+
+          @if (paintingForm.get('price')?.touched &&
+          paintingForm.get('price')?.hasError('required')) {
+          <div class="form-error">Le prix est requis.</div>
+          } @if (paintingForm.get('price')?.touched &&
+          paintingForm.get('price')?.hasError('min')) {
+          <div class="form-error">Le prix doit être positif.</div>
+          }
+        </div>
+        }
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <button type="button" class="btn-secondary" (click)="cancel()">
+        Annuler
+      </button>
+      <button
+        type="submit"
+        class="btn-primary"
+        [disabled]="paintingForm.invalid || uploading()"
+      >
+        Mettre à jour le tableau
+      </button>
+    </div>
+  </form>
+  }
+</div>

@@ -1,0 +1,69 @@
+<div class="container">
+  <a routerLink="/gallery" class="back-link">&larr; Retour à la galerie</a>
+
+  @if (isLoading()) {
+    <p class="loading-message">Chargement de l'œuvre...</p>
+  } @else {
+    @if (painting(); as p) {
+      <div class="painting-detail-layout">
+    @if (imageAspectRatio(); as ratio) {
+      <div 
+        class="painting-image-container"
+        [class.loaded]="isImageLoaded()"
+        [style.aspect-ratio]="ratio">
+        
+        @if (!isImageLoaded()) {
+          <app-loader></app-loader>
+        }
+
+        <img
+          class="final-img"
+          [class.loaded]="isImageLoaded()"
+          [ngSrc]="finalImageUrl()"
+          [alt]="p.title"
+          [width]="p.dimensions.width"
+          [height]="p.dimensions.height"
+          (load)="onImageLoad()"
+          priority />
+      </div>
+    } @else {
+      <div class="painting-image-placeholder">
+        <app-loader></app-loader>
+      </div>
+    }
+        <div class="painting-info">
+          <h1 class="painting-title">{{ p.title }}</h1>
+
+          @if (p.sell) {
+            <span class="status-badge available">Disponible</span>
+          } @else {
+            <span class="status-badge sold">Vendu</span>
+          }
+
+          <p class="painting-description">{{ p.description }}</p>
+          
+          <ul class="meta-list">
+            <li><strong>Technique :</strong> {{ p.technique }}</li>
+            <li><strong>Dimensions :</strong> {{ p.dimensions.height }}cm x {{ p.dimensions.width }}cm</li>
+            <li><strong>Création :</strong> {{ p.creationDate | date:'longDate' }}</li>
+          </ul>
+
+          @if(p.price && p.sell) {
+            <p class="painting-price">{{ p.price / 100 | currency:'EUR' }}</p>
+          }
+          
+          @if (p.sell) {
+            <app-button
+              [text]="'Acheter'"
+              [type]="'button'">
+            </app-button>
+        } @else {
+            <button class="contact-button">Contacter l'artiste</button>
+          }
+        </div>
+      </div>
+    } @else {
+      <p class="not-found-message">Désolé, cette œuvre n'a pas été trouvée.</p>
+    }
+  }
+</div>

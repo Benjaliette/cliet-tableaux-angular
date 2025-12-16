@@ -1,0 +1,65 @@
+@if (currentUser(); as user) {
+
+<div class="account-container">
+  
+  <header class="account-header">
+    <h1>Mon Compte</h1>
+    @if (user.admin) {
+      <span class="admin-badge">Administrateur</span>
+    }
+  </header>
+
+  <!-- Section 1: Informations Personnelles -->
+  <section class="account-section">
+    <h2>Mes informations personnelles</h2>
+    <div class="info-grid">
+      <p><strong>Nom :</strong> {{ user.firstName }}</p>
+      <p><strong>Email :</strong> {{ user.email }}</p>
+    </div>
+    <button class="btn-secondary">Modifier mes informations</button>
+  </section>
+
+  <!-- Section 2: Mes Commandes -->
+  <section class="account-section">
+    <h2>Mes commandes</h2>
+    <p class="placeholder-text">
+      Vous n'avez pas encore passé de commande. 
+      <a routerLink="/gallery">Visitez la galerie</a> pour trouver une œuvre qui vous inspire.
+    </p>
+    <!-- Ici, vous listeriez les commandes si elles existaient -->
+  </section>
+
+  <!-- Section 3: Tableau de Bord (ADMIN SEULEMENT) -->
+  @if (user.admin) {
+    <section class="account-section admin-dashboard">
+      <h2>Tableau de bord de gestion</h2>
+      <p>Gérez les œuvres de la galerie.</p>
+      
+      <div class="dashboard-actions">
+          <a routerLink="/admin/paintings/add" class="btn-primary">Ajouter un nouveau tableau</a>
+      </div>
+
+      <table class="tableaux-table">
+        <thead>
+          <tr>
+            <th>Titre de l'œuvre</th>
+            <th>Dimensions</th>
+            <th>Statut</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (painting of paintings(); track painting.id) {
+            <tr app-painting-card-list [painting]="painting" (delete)="handleDelete($event)"></tr>
+          } @empty {
+            <p>Aucune œuvre à afficher pour le moment.</p>
+          }
+        </tbody>
+      </table>
+    </section>
+  }
+
+</div>
+
+}
+

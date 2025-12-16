@@ -1,0 +1,18 @@
+<td>{{ painting().title }}</td>
+<td>{{ formattedDimensions() }}</td>
+<td>
+    @if (painting().sell) {
+        <span class="status-to-sell">A vendre</span>
+    } @else {
+        <span class="status-sold">Vendu</span>
+    }
+<td>
+    <button [routerLink]="['/admin/edit-painting', painting().id]" class="btn-icon" title="Modifier">✏️</button>
+    <button class="btn-icon btn-danger" title="Supprimer" (click)="onDeleteRequest($event)">🗑️</button>
+</td>
+
+<app-confirmation-modal 
+  [title]="'Confirmer la suppression'"
+  [message]="'Voulez-vous vraiment supprimer l\'œuvre \'' + painting().title + '\' ?'"
+  (onConfirm)="confirmDelete()">
+</app-confirmation-modal>

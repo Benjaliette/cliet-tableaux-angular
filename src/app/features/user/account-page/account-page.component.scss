@@ -1,0 +1,117 @@
+.account-container {
+  max-width: 900px;
+  margin: 4rem auto;
+  padding: 2rem;
+  font-family: sans-serif;
+  color: var(--color-text);
+}
+
+.account-header {
+  border-bottom: 1px solid var(--color-background-dark);
+  padding-bottom: 1.5rem;
+  margin-bottom: 2.5rem;
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+
+  h1 {
+    font-size: 2.8rem;
+    font-weight: 400;
+    margin: 0;
+  }
+}
+
+.admin-badge {
+  background-color: var(--color-background);
+  color: var(--color-text-lighter);
+  font-size: 0.75rem;
+  padding: 0.3rem 0.6rem;
+  border-radius: 1rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.account-section {
+  background-color: #fff;
+  padding: 2rem;
+  border: 1px solid var(--color-background-dark);
+  border-radius: 8px;
+  margin-bottom: 2.5rem;
+
+  h2 {
+    font-size: 1.8rem;
+    font-weight: 400;
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid var(--color-background-dark);
+    padding-bottom: 0.8rem;
+  }
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  
+  p { margin: 0; line-height: 1.6; }
+}
+
+.placeholder-text {
+  color: var(--color-text-lighter);
+  font-style: italic;
+  a { color: var(--color-blue); }
+}
+
+button {
+  cursor: pointer;
+  border-radius: 4px;
+  padding: 0.75rem 1.5rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  border: 1px solid transparent;
+  transition: all 0.2s ease;
+}
+
+.btn-primary {
+  cursor: pointer;
+  border-radius: 4px;
+  padding: 0.75rem 1.5rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-decoration: none;
+  border: 1px solid transparent;
+  transition: all 0.2s ease;
+  background-color: var(--color-red);
+  color: white;
+  &:hover { background-color: #c0392b; }
+}
+
+.btn-secondary {
+  background-color: transparent;
+  color: var(--color-text-lighter);
+  border-color: var(--color-text-lighter);
+  &:hover { background-color: #f8f9fa; }
+}
+
+.dashboard-actions {
+  margin-bottom: 1.5rem;
+}
+
+// Table de gestion
+.tableaux-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+  
+  th {
+    text-align: left;
+    padding: 1rem;
+    border-bottom: 1px solid var(--border-color);
+    font-weight: 600;
+    color: var(--secondary-color);
+    font-size: 0.85rem;
+    text-transform: uppercase;
+  }
+}
