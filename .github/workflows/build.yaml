@@ -10,6 +10,7 @@ on:
 env:
   IMAGE_NAME: cliet-tableaux-angular
   REGISTRY: ghcr.io
+  GITOPS_REPO: Benjaliette/cliet-tableaux-angular-gitops
 
 jobs:
   build:
@@ -19,7 +20,7 @@ jobs:
       packages: write
 
     outputs:
-      image-tag: ${{ steps.meta.outputs.tags }}
+      image-tag: ${{ steps.image-tag.outputs.tags }}
 
     steps:
       - name: 📥 Checkout
@@ -51,31 +52,61 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: 🏷️ Docker metadata
-        id: meta
-        uses: docker/metadata-action@v5
-        with:
-          images: ${{ env.REGISTRY }}/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}
-          tags: |
-            type=ref,event=branch
-            type=ref,event=pr
-            type=sha,prefix={{branch}}-
-            type=raw,value=latest,enable={{is_default_branch}}
+        id: image-tag
+        run: |
+          BRANCH=${GITHUB_REF#refs/heads/}
+          SHORT_SHA=$(echo ${{ github.sha }} | cut -c1-7)
+          TAG="${BRANCH}-${SHORT_SHA}"
+          echo "tag=${TAG}" >> $GITHUB_OUTPUT
+          echo "Generated tag: ${TAG}"
 
-      - name: 🚀 Build and push
+      - name: 🚀 Build and push Docker image
         uses: docker/build-push-action@v5
         with:
           context: .
           platforms: linux/arm64
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+          tags: |
+            ${{ env.REGISTRY }}/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}:${{ steps.image-tag.outputs.tag }}
+            ${{ env.REGISTRY }}/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}:${{ github.ref_name }}
+          labels: |
+            org.opencontainers.image.source=${{ github.server_url }}/${{ github.repository }}
+            org.opencontainers.image.revision=${{ github.sha }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-      - name: 📝 Update GitOps repo
-        if: github.ref == 'refs/heads/main'
+  update-gitops:
+    needs: build-and-push
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+      - name: 📥 Checkout GitOps repo
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ env.GITOPS_REPO }}
+          token: ${{ secrets.GITOPS_PAT }}
+          ref: main
+
+      - name: ✏️ Update image tag in kustomization
         run: |
-          # Cette étape va trigger un commit dans le repo GitOps
-          echo "Image pushed: ${{ steps.meta.outputs.tags }}"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITOPS_PAT }}
+          cd overlays/prod
+
+          # Update avec kustomize edit
+          kustomize edit set image app-image=${{ env.REGISTRY }}/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}:${{ needs.build-and-push.outputs.image-tag }}
+
+          echo "✅ Updated kustomization.yaml with new image tag"
+          cat kustomization.yaml
+
+      - name: 📤 Commit and push changes
+        run: |
+          git config user.name "GitHub Actions Bot"
+          git config user.email "actions@github.com"
+
+          git add overlays/prod/kustomization.yaml
+          git commit -m "🚀 Update image to ${{ needs.build-and-push.outputs.image-tag }}" || echo "No changes to commit"
+          git push
+
+      - name: ✅ Deployment triggered
+        run: |
+          echo "🎉 GitOps repo updated!"
