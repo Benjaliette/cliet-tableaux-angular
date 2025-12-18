@@ -97,6 +97,26 @@ jobs:
           token: ${{ secrets.GITOPS_PAT }}
           path: gitops  # ⬅️ IMPORTANT : checkout dans un sous-dossier
 
+      - name: 🔍 Debug filesystem
+        run: |
+          echo "📂 Current directory:"
+          pwd
+          echo ""
+          echo "📁 Listing gitops directory:"
+          ls -la gitops/
+          echo ""
+          echo "📁 Listing gitops/overlays:"
+          ls -la gitops/overlays/ || echo "overlays/ not found"
+          echo ""
+          echo "📁 Listing gitops/overlays/prod:"
+          ls -la gitops/overlays/prod/ || echo "overlays/prod/ not found"
+          echo ""
+          echo "📄 Content of kustomization.yaml (if exists):"
+          cat gitops/overlays/prod/kustomization.yaml || echo "kustomization.yaml not found"
+          echo ""
+          echo "🌳 Full tree:"
+          tree gitops/ || find gitops/ -type f
+
       - name: 🔧 Setup Kustomize
         run: |
           curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh" | bash
