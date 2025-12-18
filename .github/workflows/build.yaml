@@ -10,7 +10,6 @@ on:
 env:
   IMAGE_NAME: cliet-tableaux-angular
   REGISTRY: ghcr.io
-  GITOPS_REPO: Benjaliette/cliet-tableaux-angular-gitops
 
 jobs:
   build-and-push:
@@ -86,7 +85,7 @@ jobs:
       - name: 📥 Checkout GitOps repo
         uses: actions/checkout@v4
         with:
-          repository: ${{ env.GITOPS_REPO }}
+          repository: ${{ github.repository_owner }}/cliet-tableaux-angular-gitops
           token: ${{ secrets.GITOPS_PAT }}
           ref: main
 
