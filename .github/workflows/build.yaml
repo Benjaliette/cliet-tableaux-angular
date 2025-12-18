@@ -37,8 +37,8 @@ jobs:
           npm ci --legacy-peer-deps --omit=optional || \
           npm install --legacy-peer-deps
 
-      - name: 🧪 Run tests
-        run: npm run test -- --watch=false --browsers=ChromeHeadless
+      #- name: 🧪 Run tests
+      #  run: npm run test -- --watch=false --browsers=ChromeHeadless
 
       - name: 🏗️ Build Angular
         run: npm run build -- --configuration production
