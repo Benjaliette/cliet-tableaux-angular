@@ -81,57 +81,11 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-  update-gitops:
-    needs: build-and-push
-    runs-on: ubuntu-latest
-    steps:
-      - name: 🔧 Set lowercase owner
-        id: lowercase
+      - name: 🔄 Trigger ArgoCD sync
         run: |
-          echo "owner=$(echo ${{ github.repository_owner }} | tr '[:upper:]' '[:lower:]')" >> $GITHUB_OUTPUT
-
-      - name: 📥 Checkout GitOps repo
-        uses: actions/checkout@v4
-        with:
-          repository: ${{ github.repository_owner }}/cliet-tableaux-angular-gitops
-          token: ${{ secrets.GITOPS_PAT }}
-          path: gitops
-
-      - name: 🔧 Setup Kustomize
-        run: |
-          curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh" | bash
-          sudo mv kustomize /usr/local/bin/
-
-      - name: ✏️ Update image tag in kustomization
-        run: |
-          cd gitops/overlays/prod
-
-          NEW_TAG="${{ needs.build-and-push.outputs.image-tag }}"
-          NEW_NAME="ghcr.io/${{ steps.lowercase.outputs.owner }}/${{ env.IMAGE_NAME }}"
-
-          echo "🔍 Using tag: ${NEW_TAG}"
-          echo "🔍 Using image: ${NEW_NAME}"
-
-          # ✅ Utiliser le nom du PLACEHOLDER, pas du deployment
-          kustomize edit set image app-image=${NEW_NAME}:${NEW_TAG}
-
-          echo "✅ Updated kustomization.yaml"
-          cat kustomization.yaml
-
-      - name: 📤 Commit and push
-        run: |
-          cd gitops
-
-          git remote set-url origin https://x-access-token:${{ secrets.GITOPS_PAT }}@github.com/${{ github.repository_owner }}/cliet-tableaux-angular-gitops.git
-
-          git config user.name "GitHub Actions Bot"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-
-          git add overlays/prod/kustomization.yaml
-
-          if git diff --staged --quiet; then
-            echo "⚠️ No changes to commit"
-          else
-            git commit -m "🚀 Update image to ${{ needs.build-and-push.outputs.image-tag }}"
-            git push
-          fi
+          echo "✅ Image pushed with tags:"
+          echo "  - ${{ steps.image-tag.outputs.tag }}"
+          echo "  - latest"
+          echo ""
+          echo "🔔 To deploy, run on your Raspberry Pi:"
+          echo "kubectl rollout restart deployment/cliet-tableaux-angular-prod -n production"
