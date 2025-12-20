@@ -95,27 +95,7 @@ jobs:
         with:
           repository: ${{ github.repository_owner }}/cliet-tableaux-angular-gitops
           token: ${{ secrets.GITOPS_PAT }}
-          path: gitops  # ⬅️ IMPORTANT : checkout dans un sous-dossier
-
-      - name: 🔍 Debug filesystem
-        run: |
-          echo "📂 Current directory:"
-          pwd
-          echo ""
-          echo "📁 Listing gitops directory:"
-          ls -la gitops/
-          echo ""
-          echo "📁 Listing gitops/overlays:"
-          ls -la gitops/overlays/ || echo "overlays/ not found"
-          echo ""
-          echo "📁 Listing gitops/overlays/prod:"
-          ls -la gitops/overlays/prod/ || echo "overlays/prod/ not found"
-          echo ""
-          echo "📄 Content of kustomization.yaml (if exists):"
-          cat gitops/overlays/prod/kustomization.yaml || echo "kustomization.yaml not found"
-          echo ""
-          echo "🌳 Full tree:"
-          tree gitops/ || find gitops/ -type f
+          path: gitops
 
       - name: 🔧 Setup Kustomize
         run: |
@@ -124,12 +104,13 @@ jobs:
 
       - name: ✏️ Update image tag in kustomization
         run: |
-          cd gitops/overlays/prod  # ⬅️ Change le chemin
+          cd gitops/overlays/prod
 
           NEW_TAG="${{ needs.build-and-push.outputs.image-tag }}"
           NEW_NAME="ghcr.io/${{ steps.lowercase.outputs.owner }}/${{ env.IMAGE_NAME }}"
 
-          kustomize edit set image cliet-tableaux-angular=${NEW_NAME}:${NEW_TAG}
+          # ✅ Utiliser le nom du PLACEHOLDER, pas du deployment
+          kustomize edit set image app-image=${NEW_NAME}:${NEW_TAG}
 
           echo "✅ Updated kustomization.yaml"
           cat kustomization.yaml
@@ -138,7 +119,6 @@ jobs:
         run: |
           cd gitops
 
-          # Configure git avec le token dans l'URL
           git remote set-url origin https://x-access-token:${{ secrets.GITOPS_PAT }}@github.com/${{ github.repository_owner }}/cliet-tableaux-angular-gitops.git
 
           git config user.name "GitHub Actions Bot"
@@ -146,7 +126,6 @@ jobs:
 
           git add overlays/prod/kustomization.yaml
 
-          # Vérifier s'il y a des changements avant de commit
           if git diff --staged --quiet; then
             echo "⚠️ No changes to commit"
           else
