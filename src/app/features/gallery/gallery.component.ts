@@ -1,7 +1,7 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { PaintingsStore } from '../../core/store/paintings.store';
 import { PaintingCardComponent } from '../../shared/components/painting-card/painting-card.component';
-import { CommonModule } from '@angular/common';
+
 import { ToastService } from '@app/core/services/toast.service';
 import { AuthService } from '@app/core/auth/auth.service';
 import { RouterLink } from '@angular/router';
@@ -9,7 +9,7 @@ import { RouterLink } from '@angular/router';
 @Component({
   selector: 'app-gallery',
   standalone: true,
-  imports: [CommonModule, PaintingCardComponent, RouterLink],
+  imports: [PaintingCardComponent, RouterLink],
   templateUrl: './gallery.component.html',
   styleUrl: './gallery.component.scss'
 })

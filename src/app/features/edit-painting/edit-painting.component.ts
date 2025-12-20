@@ -1,5 +1,5 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
-import { CommonModule, Location } from '@angular/common';
+import { Location } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CloudinaryUploadService } from '../../core/services/cloudinary-upload.service';
@@ -13,7 +13,7 @@ import { PaintingsApiService } from '@app/core/api/paintings/paintings-api.servi
 @Component({
   selector: 'app-edit-painting',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [ReactiveFormsModule],
   templateUrl: './edit-painting.component.html',
   styleUrls: ['./edit-painting.component.scss']
 })

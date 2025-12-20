@@ -10,29 +10,45 @@
     <div class="form-group">
       <label for="name">Votre Nom *</label>
       <input type="text" id="name" formControlName="name" placeholder="Ex: Jean Dupont" [class.is-invalid]="isSubmitted && formControls['name'].errors">
-      <div *ngIf="isSubmitted && formControls['name'].errors" class="error-message">
-        <span *ngIf="formControls['name'].errors['required']">Le nom est requis.</span>
-      </div>
+      @if (isSubmitted && formControls['name'].errors) {
+        <div class="error-message">
+          @if (formControls['name'].errors['required']) {
+            <span>Le nom est requis.</span>
+          }
+        </div>
+      }
     </div>
 
     <!-- Champ Email -->
     <div class="form-group">
       <label for="email">Votre Email *</label>
       <input type="email" id="email" formControlName="email" placeholder="Ex: jean.dupont@email.com" [class.is-invalid]="isSubmitted && formControls['email'].errors">
-      <div *ngIf="isSubmitted && formControls['email'].errors" class="error-message">
-        <span *ngIf="formControls['email'].errors['required']">L'email est requis.</span>
-        <span *ngIf="formControls['email'].errors['email']">Le format de l'email est invalide.</span>
-      </div>
+      @if (isSubmitted && formControls['email'].errors) {
+        <div class="error-message">
+          @if (formControls['email'].errors['required']) {
+            <span>L'email est requis.</span>
+          }
+          @if (formControls['email'].errors['email']) {
+            <span>Le format de l'email est invalide.</span>
+          }
+        </div>
+      }
     </div>
 
     <!-- Champ Description -->
     <div class="form-group">
       <label for="description">Description de votre projet *</label>
       <textarea id="description" formControlName="description" rows="6" placeholder="Décrivez les couleurs, le style, les dimensions, etc." [class.is-invalid]="isSubmitted && formControls['description'].errors"></textarea>
-      <div *ngIf="isSubmitted && formControls['description'].errors" class="error-message">
-        <span *ngIf="formControls['description'].errors['required']">Une description est requise.</span>
-        <span *ngIf="formControls['description'].errors['minlength']">La description doit faire au moins 20 caractères.</span>
-      </div>
+      @if (isSubmitted && formControls['description'].errors) {
+        <div class="error-message">
+          @if (formControls['description'].errors['required']) {
+            <span>Une description est requise.</span>
+          }
+          @if (formControls['description'].errors['minlength']) {
+            <span>La description doit faire au moins 20 caractères.</span>
+          }
+        </div>
+      }
     </div>
 
     <!-- Champ Upload d'image -->
@@ -42,16 +58,18 @@
         <span>Joindre une image (facultatif)</span>
       </label>
       <input type="file" id="image" (change)="onFileChange($event)" accept="image/png, image/jpeg">
-      <span *ngIf="fileName" class="file-name">{{ fileName }}</span>
+      @if (fileName) {
+        <span class="file-name">{{ fileName }}</span>
+      }
     </div>
 
     <!-- Bouton de soumission -->
     <div class="submit-container">
-        <app-button
-            [text]="'Envoyer ma demande'"
-            [type]="'submit'"
-            [disabled]="contactForm.invalid && isSubmitted">
-        </app-button>
+      <app-button
+        [text]="'Envoyer ma demande'"
+        [type]="'submit'"
+        [disabled]="contactForm.invalid && isSubmitted">
+      </app-button>
     </div>
 
     <p class="sm m-top">* champs obligatoires</p>

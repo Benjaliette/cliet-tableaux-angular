@@ -1,6 +1,6 @@
 import { Component, computed, EventEmitter, inject, input, Output, Signal, ViewChild } from '@angular/core';
 import { Painting } from '../../models/painting.model';
-import { CommonModule, NgOptimizedImage } from '@angular/common';
+import { NgOptimizedImage } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { AuthService } from '@app/core/auth/auth.service';
 import { ConfirmationModalComponent } from '../modals/confirmation-modal/confirmation-modal.component';
@@ -9,7 +9,7 @@ import { ImageTransformationService } from '@app/core/services/image-transformat
 @Component({
   selector: 'app-painting-card',
   standalone: true,
-  imports: [CommonModule, RouterLink, NgOptimizedImage, ConfirmationModalComponent],
+  imports: [RouterLink, NgOptimizedImage, ConfirmationModalComponent],
   templateUrl: './painting-card.component.html',
   styleUrl: './painting-card.component.scss'
 })

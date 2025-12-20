@@ -1,5 +1,5 @@
 import { Component, signal, WritableSignal } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { ButtonComponent } from '../../button/button.component';
 import { AuthService } from '@app/core/auth/auth.service';
@@ -9,7 +9,7 @@ import { finalize } from 'rxjs';
 @Component({
   selector: 'app-login-form',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, ButtonComponent],
+  imports: [ReactiveFormsModule, ButtonComponent],
   templateUrl: './login-form.component.html',
   styleUrls: ['./login-form.component.scss', '../form-styles.scss'] // Partage de styles
 })

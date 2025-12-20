@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { AuthService } from '@app/core/auth/auth.service';
@@ -8,7 +8,7 @@ import { PaintingCardListComponent } from '@app/shared/components/painting-card-
 
 @Component({
   selector: 'app-account-page',
-  imports: [CommonModule, RouterLink, PaintingCardListComponent],
+  imports: [RouterLink, PaintingCardListComponent],
   templateUrl: './account-page.component.html',
   styleUrl: './account-page.component.scss'
 })

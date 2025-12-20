@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, computed, EventEmitter, input, Output, Signal, ViewChild } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Painting } from '@app/shared/models/painting.model';
@@ -6,7 +6,7 @@ import { ConfirmationModalComponent } from '@shared/components/modals/confirmati
 
 @Component({
   selector: '[app-painting-card-list]',
-  imports: [RouterLink, CommonModule, ConfirmationModalComponent],
+  imports: [RouterLink, ConfirmationModalComponent],
   templateUrl: './painting-card-list.component.html',
   styleUrl: './painting-card-list.component.scss'
 })

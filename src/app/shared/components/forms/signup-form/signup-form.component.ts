@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { ButtonComponent } from '../../button/button.component';
 import { matchValidator } from '@shared/validators/custom-validators';
@@ -10,7 +10,7 @@ import { finalize } from 'rxjs';
 @Component({
   selector: 'app-signup-form',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, ButtonComponent],
+  imports: [ReactiveFormsModule, ButtonComponent],
   templateUrl: './signup-form.component.html',
   styleUrls: ['./signup-form.component.scss', '../form-styles.scss']
 })

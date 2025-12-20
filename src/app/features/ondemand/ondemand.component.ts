@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { ButtonComponent } from '../../shared/components/button/button.component';
 
@@ -7,10 +7,9 @@ import { ButtonComponent } from '../../shared/components/button/button.component
   selector: 'app-ondemand',
   standalone: true,
   imports: [
-    CommonModule,
     ReactiveFormsModule,
     ButtonComponent
-  ],
+],
   templateUrl: './ondemand.component.html',
   styleUrl: './ondemand.component.scss'
 })

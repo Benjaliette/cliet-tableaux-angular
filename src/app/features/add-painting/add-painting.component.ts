@@ -1,6 +1,6 @@
 // src/app/pages/add-painting-page/add-painting-page.component.ts
 import { Component, computed, inject, signal } from '@angular/core';
-import { CommonModule,Location } from '@angular/common';
+import { Location } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CloudinaryUploadService } from '../../core/services/cloudinary-upload.service';
@@ -13,7 +13,7 @@ import { ImageTransformationService } from '@app/core/services/image-transformat
 @Component({
   selector: 'app-add-painting',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule], // Ne pas oublier ReactiveFormsModule !
+  imports: [ReactiveFormsModule], // Ne pas oublier ReactiveFormsModule !
   templateUrl: './add-painting.component.html',
   styleUrls: ['./add-painting.component.scss']
 })

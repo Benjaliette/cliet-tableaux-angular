@@ -1,5 +1,5 @@
 import { Component, computed, inject, OnInit, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { ButtonComponent } from '../../shared/components/button/button.component';
 import { ContactApiService } from '@app/core/api/contact/contact-api.service';
@@ -13,11 +13,10 @@ type FormStatus = 'idle' | 'loading' | 'success' | 'error';
   selector: 'app-contact',
   standalone: true,
   imports: [
-    CommonModule,
     ReactiveFormsModule,
     ButtonComponent,
     LoaderComponent
-  ],
+],
   templateUrl: './contact.component.html',
   styleUrl: './contact.component.scss'
 })
