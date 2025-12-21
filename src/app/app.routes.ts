@@ -47,17 +47,16 @@ export const routes: Routes = [
       },
       {
         path: 'admin/paintings/add',
-        loadComponent: () => 
+        loadComponent: () =>
           import('./features/add-painting/add-painting.component').then(m => m.AddPaintingComponent),
         canActivate: [authGuard, adminGuard]
       },
       {
-        path: 'admin/edit-painting/:id', 
+        path: 'admin/edit-painting/:id',
         loadComponent: () => import('./features/edit-painting/edit-painting.component').then(m => m.EditPaintingComponent),
         canActivate: [authGuard, adminGuard]
       },
       {
-        // Route par défaut si l'URL ne correspond à rien
         path: '**',
         redirectTo: '/gallery'
       }
