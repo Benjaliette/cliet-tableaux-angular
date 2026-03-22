@@ -1,8 +1,21 @@
-<button
-  [type]="type"
+@if (link()) {
+  <a
+    [routerLink]="link()"
+    [class]="customClass()"
+    class="btn"
+    [class.disabled]="disabled()"
+    (click)="onClick($event)"
+  >
+    {{ text() }}
+  </a>
+
+} @else {
+  <button
+  [type]="type()"
   class="btn"
-  [ngClass]="customClass"
-  [disabled]="disabled"
-  (click)="onClick()">
-  {{ text }}
+  [class]="customClass()"
+  [disabled]="disabled()"
+  (click)="onClick($event)">
+  {{ text() }}
 </button>
+}

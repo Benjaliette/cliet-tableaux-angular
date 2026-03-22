@@ -1,25 +1,29 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, input, output } from '@angular/core';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-button',
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink],
   templateUrl: './button.component.html',
   styleUrl: './button.component.scss'
 })
 export class ButtonComponent {
-  @Input() text: string = 'Cliquez-moi';
-  @Input() customClass: string = '';
-  @Input() type: 'button' | 'submit' | 'reset' = 'button';
-  @Input() disabled: boolean = false;
+  text = input<string>('Cliquez-moi');
+  customClass = input<string>('');
+  type = input<'button' | 'submit' | 'reset'>('button');
+  disabled = input<boolean>(false);
+  link = input<string | any[] | null>(null);
 
-  @Output() btnClick = new EventEmitter<void>();
+  btnClick = output<void>();
 
-  constructor() {}
-
-  onClick(): void {
-    if (!this.disabled) {
-      this.btnClick.emit();
+  onClick(event: Event): void {
+    if (this.disabled()) {
+      event.preventDefault();
+      event.stopPropagation();
+      return;
     }
+
+    this.btnClick.emit();
   }
 }

@@ -6,6 +6,8 @@ import localeFr from '@angular/common/locales/fr';
 import { routes } from './app.routes';
 import { registerLocaleData } from '@angular/common';
 import { authInterceptor } from '@app/core/auth/auth.interceptor';
+import { provideNgxStripe } from 'ngx-stripe';
+import { environment } from '@environments/environment';
 
 registerLocaleData(localeFr);
 
@@ -20,6 +22,7 @@ export const appConfig: ApplicationConfig = {
       withViewTransitions()
     ),
     provideHttpClient(withInterceptors([authInterceptor])),
-    { provide: LOCALE_ID, useValue: 'fr' }
+    { provide: LOCALE_ID, useValue: 'fr' },
+    provideNgxStripe(environment.stripePublicKey)
   ]
 };

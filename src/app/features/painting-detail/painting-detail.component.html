@@ -7,11 +7,11 @@
     @if (painting(); as p) {
       <div class="painting-detail-layout">
     @if (imageAspectRatio(); as ratio) {
-      <div 
+      <div
         class="painting-image-container"
         [class.loaded]="isImageLoaded()"
         [style.aspect-ratio]="ratio">
-        
+
         @if (!isImageLoaded()) {
           <app-loader></app-loader>
         }
@@ -41,7 +41,7 @@
           }
 
           <p class="painting-description">{{ p.description }}</p>
-          
+
           <ul class="meta-list">
             <li><strong>Technique :</strong> {{ p.technique }}</li>
             <li><strong>Dimensions :</strong> {{ p.dimensions.height }}cm x {{ p.dimensions.width }}cm</li>
@@ -51,11 +51,12 @@
           @if(p.price && p.sell) {
             <p class="painting-price">{{ p.price / 100 | currency:'EUR' }}</p>
           }
-          
+
           @if (p.sell) {
             <app-button
               [text]="'Acheter'"
-              [type]="'button'">
+              [type]="'button'"
+              (click)="buy()")>
             </app-button>
         } @else {
             <button class="contact-button">Contacter l'artiste</button>

@@ -8,6 +8,8 @@ import { PaintingsApiService } from '@app/core/api/paintings/paintings-api.servi
 import { finalize } from 'rxjs';
 import { ImageTransformationService } from '@app/core/services/image-transformation.service';
 import { LoaderComponent } from '@app/shared/components/loader/loader.component';
+import { PaymentService } from '@app/core/services/payment.service';
+import { CheckoutSessionRequest } from '@app/shared/models/checkout-session-request';
 
 @Component({
   selector: 'app-painting-detail',
@@ -21,6 +23,7 @@ export class PaintingDetailComponent implements OnInit {
   private router = inject(Router);
   private store = inject(PaintingsStore);
   private paintingsApi = inject(PaintingsApiService);
+  private paymentService = inject(PaymentService);
   private imageTransformation = inject(ImageTransformationService);
   public imageAspectRatio = signal<number | null>(null);
 
@@ -81,12 +84,37 @@ export class PaintingDetailComponent implements OnInit {
       this.router.navigate(['/not-found']);
       return;
     }
-    
+
     this.loadPainting(paintingId);
   }
 
   onImageLoad(): void {
     this.isImageLoaded.set(true);
+  }
+
+  buy(): void {
+    const orderRequest: CheckoutSessionRequest = {
+      amount: this.painting()!.price!,
+      currency: 'EUR',
+      userId: 1,
+      paintingId: this.painting()!.id!
+    };
+
+    this.paymentService.createCheckoutSession(orderRequest).subscribe({
+      next: (response) => {
+        if (response.url) {
+          this.paymentService.redirectToCheckout(response.url);
+        } else {
+          this.error.set('Erreur lors de la création de la session de paiement.');
+          this.isLoading.set(false);
+        }
+      },
+      error: (err) => {
+        console.error('Erreur lors de la création de la session de paiement', err);
+        this.error.set(err.message || 'Une erreur est survenue lors du processus de paiement.');
+        this.isLoading.set(false);
+      }
+    });
   }
 
   private loadPainting(id: string): void {

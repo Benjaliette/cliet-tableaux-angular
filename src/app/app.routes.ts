@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 import { MainLayoutComponent } from './layouts/main-layout/main-layout.component';
 import { authGuard } from '@app/core/auth/auth.guard';
 import { adminGuard } from './core/api/user/admin.guard';
+import { PaymentLayoutComponent } from './layouts/payment-layout/payment-layout.component';
 
 
 export const routes: Routes = [
@@ -10,6 +11,15 @@ export const routes: Routes = [
     loadComponent: () => import('./features/user/login/login.component').then(m => m.LoginComponent),
     title: 'Identification - Cliet Tableaux'
   },
+  // {
+  //   path: 'checkout',
+  //   component: PaymentLayoutComponent,
+  //   children: [{
+  //     path: '',
+  //     loadComponent: () => import('./features/checkout/checkout.component').then(m => m.CheckoutComponent),
+  //     title: 'Paiement - Cliet Tableaux'
+  //   }]
+  // },
   {
     path: '',
     component: MainLayoutComponent,
