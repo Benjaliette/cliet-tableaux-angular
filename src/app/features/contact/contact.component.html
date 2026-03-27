@@ -45,12 +45,11 @@
 
       <!-- Champ Description -->
       <div class="form-group">
-        <label for="description">Votre message *</label>
-        <textarea id="description" formControlName="description" rows="6" placeholder="Posez toutes vos questions ici ..." [class.is-invalid]="submitted() && f.description.errors"></textarea>
-        @if (submitted() && f.description.errors) {
+        <label for="message">Votre message *</label>
+        <textarea id="message" formControlName="message" rows="6" placeholder="Posez toutes vos questions ici ..." [class.is-invalid]="submitted() && f.message.errors"></textarea>
+        @if (submitted() && f.message.errors) {
           <div class="error-message">
-            @if (f.description.errors['required']) { <span>Une description est requise.</span> }
-            @if (f.description.errors['minlength']) { <span>La description doit faire au moins 20 caractères.</span> }
+            @if (f.message.errors['required']) { <span>Un message est requise.</span> }
           </div>
         }
       </div>

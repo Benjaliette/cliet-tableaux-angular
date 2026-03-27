@@ -23,14 +23,14 @@ type FormStatus = 'idle' | 'loading' | 'success' | 'error';
 export class ContactComponent {
   private fb = inject(FormBuilder);
   private contactApi = inject(ContactApiService);
-  
+
   public status = signal<FormStatus>('idle');
   public submitted = signal(false);
 
   public contactForm = this.fb.group({
     name: ['', [Validators.required]],
     email: ['', [Validators.required, Validators.email]],
-    description: ['', [Validators.required, Validators.minLength(20)]]
+    message: ['', [Validators.required]]
   });
 
   public showErrors = computed(() => this.submitted() && this.contactForm.invalid);
